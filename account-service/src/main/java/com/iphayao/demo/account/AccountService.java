@@ -19,12 +19,12 @@ public class AccountService {
         return accountRepository.findById(id);
     }
 
-    public Mono<Account> addNewAccount(Account account) {
-        return Mono.just(account).flatMap(accountRepository::save);
+    public Mono<Account> addNewAccount(Mono<Account> account) {
+        return account.flatMap(accountRepository::save);
     }
 
-    public Mono<Account> updateAccountById(ObjectId id, Account account) {
-        return Mono.just(account).flatMap(a -> accountRepository.findById(id)
+    public Mono<Account> updateAccountById(ObjectId id, Mono<Account> account) {
+        return account.flatMap(a -> accountRepository.findById(id)
                 .flatMap(e -> {
                     a.setId(e.getId());
                     return accountRepository.save(a);
