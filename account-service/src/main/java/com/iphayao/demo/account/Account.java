@@ -13,4 +13,5 @@ public class Account {
     private String username;
     private String phone;
     private String email;
+    private Long birthday;
 }

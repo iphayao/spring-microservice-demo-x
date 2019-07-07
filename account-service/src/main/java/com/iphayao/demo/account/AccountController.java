@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/users")
 public class AccountController {
@@ -23,7 +25,7 @@ public class AccountController {
     }
 
     @PostMapping
-    public Mono<ResponseEntity<AccountDto>> postAccount(@RequestBody AccountDto account) {
+    public Mono<ResponseEntity<AccountDto>> postAccount(@RequestBody @Valid AccountDto account) {
         return accountService.addNewAccount(mapper.toEntity(account))
                 .map(e -> ResponseEntity.ok(mapper.toDto(e)));
     }
@@ -37,7 +39,7 @@ public class AccountController {
 
     @PutMapping("/{user_id}")
     public Mono<ResponseEntity<AccountDto>> putAccountById(@PathVariable("user_id") String userId,
-                                           @RequestBody AccountDto account) {
+                                           @RequestBody @Valid AccountDto account) {
         return accountService.updateAccountById(new ObjectId(userId), mapper.toEntity(account))
                 .map(e -> ResponseEntity.ok(mapper.toDto(e)))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
