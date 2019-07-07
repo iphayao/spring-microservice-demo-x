@@ -2,7 +2,6 @@ package com.iphayao.demo.account;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -41,7 +40,7 @@ public class AccountController {
 
     @PutMapping("/{user_id}")
     public Mono<ResponseEntity<AccountDto>> putAccountById(@PathVariable("user_id") String userId,
-                                           @RequestBody @Valid Mono<AccountDto> account) {
+                                                           @RequestBody @Valid Mono<AccountDto> account) {
         return accountService.updateAccountById(new ObjectId(userId), account.map(mapper::toEntity))
                 .map(e -> ResponseEntity.ok(mapper.toDto(e)))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
